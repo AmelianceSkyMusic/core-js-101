@@ -294,8 +294,20 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const cardLength = ccn.toString().length - 1;
+  const isEven = (num) => !(num % 2);
+  const isOdd = (num) => !!(num % 2);
+  const check = isEven(cardLength) ? isOdd : isEven;
+  const arrayOfConvertedNumbers = ccn.toString().split('').map((num, i) => {
+    let number = num;
+    if (check(i)) number = num * 2;
+    if (number > 9) number -= 9;
+    return +number;
+  });
+
+  const sumOfNumbers = arrayOfConvertedNumbers.reduce((sum, num) => sum + num, 0);
+  return !(sumOfNumbers % 10);
 }
 
 /**
@@ -313,9 +325,12 @@ function isCreditCardNumber(/* ccn */) {
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
 function getDigitalRoot(num) {
-  const sum = num.toString().split('').reduce((sumOfNumbers, number) => Number(+sumOfNumbers + +number), 0);
-  if (sum > 9) getDigitalRoot(sum);
-  return sum;
+  const recurcy = (longNumber) => {
+    if (longNumber <= 9) return longNumber;
+    const sum = longNumber.toString().split('').reduce((sumOfNumbers, number) => Number(+sumOfNumbers + +number), 0);
+    return recurcy(sum);
+  };
+  return recurcy(num);
 }
 
 
@@ -340,8 +355,27 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) { // ! asm REFACTOR
+  const arr = str.split('');
+  const brackets = ['[', '{', '(', '<'];
+  const bracketsPair = {
+    ']': '[',
+    '}': '{',
+    ')': '(',
+    '>': '<',
+  };
+  const stack = [];
+  for (let i = 0; i < arr.length; i += 1) {
+    if (brackets.includes(arr[i])) {
+      stack.push(arr[i]);
+    } else {
+      if (stack.length < 1) return false;
+      if (bracketsPair[arr[i]] === stack[stack.length - 1]) {
+        stack.pop();
+      } else return false;
+    }
+  }
+  return stack.length < 1;
 }
 
 
