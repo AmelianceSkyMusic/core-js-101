@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Core JS 101",
   "scripts": {
-    "test": "npm run lint && mocha --watch",
+    "test": "npm run lint && mocha",
     "lint": "node node_modules/eslint/bin/eslint.js ./src",
-    "testing": "npm test --watch"
+    "testing": "npm run lint && mocha --watch"
   },
   "author": "aorgish, mikhama",
   "license": "MIT",
