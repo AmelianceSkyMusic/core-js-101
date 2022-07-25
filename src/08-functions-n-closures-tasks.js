@@ -130,7 +130,7 @@ function retry(/* func, attempts */) {
  * cos(3.141592653589793) ends
  *
  */
-function logger(func, logFunc) {
+function logger(/* func, logFunc */) {
   // let mem;
   // return (param) => {
   //   if (mem === undefined) {
