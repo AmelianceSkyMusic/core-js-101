@@ -100,14 +100,16 @@ function chainPromises(array, action) {
   return new Promise((resolve) => {
     const arrayRes = [];
     array.forEach(async (arr, i) => {
-      const result = await arr;
-      result.catch(() => {});
-      arrayRes.push(result);
+      try {
+        const result = await arr;
+        arrayRes.push(result);
 
-      if (i === array.length - 1) {
-        const resultValue = arrayRes.reduce(action);
-        resolve(resultValue);
-      }
+        if (i === array.length - 1) {
+          const resultValue = arrayRes.reduce(action);
+          resolve(resultValue);
+        }
+      } catch (err) { (function doNothing() {}()); }
+      // result.catch(() => {});
     });
   });
 }
