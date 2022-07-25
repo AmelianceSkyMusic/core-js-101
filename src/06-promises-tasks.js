@@ -28,8 +28,12 @@
  *      .catch((error) => console.log(error.message)) // 'Error: Wrong parameter is passed!
  *                                                    //  Ask her again.';
  */
-function willYouMarryMe(/* isPositiveAnswer */) {
-  throw new Error('Not implemented');
+function willYouMarryMe(isPositiveAnswer) {
+  return new Promise((resolve, reject) => {
+    if (typeof isPositiveAnswer !== 'boolean') reject(new Error('Wrong parameter is passed! Ask her again.'));
+    if (isPositiveAnswer) resolve('Hooray!!! She said "Yes"!');
+    if (!isPositiveAnswer) resolve('Oh no, she said "No".');
+  });
 }
 
 
@@ -48,8 +52,8 @@ function willYouMarryMe(/* isPositiveAnswer */) {
  *    })
  *
  */
-function processAllPromises(/* array */) {
-  throw new Error('Not implemented');
+function processAllPromises(array) {
+  return Promise.all(array);
 }
 
 /**
@@ -71,8 +75,8 @@ function processAllPromises(/* array */) {
  *    })
  *
  */
-function getFastestPromise(/* array */) {
-  throw new Error('Not implemented');
+function getFastestPromise(array) {
+  return Promise.race(array);
 }
 
 /**
@@ -92,9 +96,45 @@ function getFastestPromise(/* array */) {
  *    });
  *
  */
-function chainPromises(/* array, action */) {
-  throw new Error('Not implemented');
+function chainPromises(array, action) {
+  return new Promise((resolve) => {
+    const arrayRes = [];
+    array.forEach(async (arr, i) => {
+      const result = await arr;
+      result.catch(() => {});
+      arrayRes.push(result);
+
+      if (i === array.length - 1) {
+        const resultValue = arrayRes.reduce(action);
+        resolve(resultValue);
+      }
+    });
+  });
 }
+// function chainPromises(array, action) {
+//   return new Promise((resolve) => {
+//     const resultArr = [];
+//     console.log(array.length);
+//     async function name(params) {
+
+//     }
+//     for (let i = 0; i < array.length; i += 1) {
+//       array[i].then((value) => {
+//         // console.log(value);
+//         resultArr[i] = value;
+//         return resultArr;
+//       }).then((arr) => {
+//         if (i === array.length - 1) {
+//           console.log(arr);
+//           const result = resultArr.map((arr) => arr.reduce(action));
+//           resolve(result);
+//         }
+//       }).catch(() => {});
+//     }
+//     // const result = resultArr.map((arr) => arr.reduce(action));
+//     // console.log(result);
+//   });
+// }
 
 module.exports = {
   willYouMarryMe,
